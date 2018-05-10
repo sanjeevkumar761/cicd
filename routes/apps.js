@@ -7,15 +7,12 @@ var router = express.Router();
 const endpoint = "https://api.cf.eu10.hana.ondemand.com";
 const username = "sanjeev_kumar@rcomext.com";
 const password = "Hackathon8%2";
+const spaceid = "79a6cdb5-296b-46bd-b28a-a433492009de";
+const orgid = "53f33523-70ab-4c1a-b8ac-bfb233a0d853";
  
 const CloudController = new (require("cf-nodejs-client")).CloudController(endpoint);
 const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
 const Apps = new (require("cf-nodejs-client")).Apps(endpoint);
-
-
-const spaceid = "79a6cdb5-296b-46bd-b28a-a433492009de";
-const orgid = "53f33523-70ab-4c1a-b8ac-bfb233a0d853";
-var appid = "c8fae746-2960-436d-85e4-81e583bd642f";
 
 router.get('/', function(req, res, next) {
 
@@ -24,8 +21,10 @@ router.get('/', function(req, res, next) {
     return UsersUAA.login(username, password);
   }).then( (result) => {
     Apps.setToken(result);
-    res.send(Apps.getApps());
-    return "App Listed";
+    Apps.getApps().then( (resultApps) => {
+      res.send(resultApps);
+    });
+    return "Apps Listed";
   }).then( (result) => {
     console.log(result);
   }).catch( (reason) => {
@@ -82,6 +81,12 @@ var appoptions = {
 
 router.get('/remove', function(req, res, next) {
 
+  var appid = req.query.appid;
+  if (!appid) {
+    res.send("No App Specified");
+    return "No App Specified";
+  }
+
   CloudController.getInfo().then( (result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
     return UsersUAA.login(username, password);
@@ -101,6 +106,12 @@ router.get('/remove', function(req, res, next) {
 });
 
 router.get('/start', function(req, res, next) {
+
+  var appid = req.query.appid;
+  if (!appid) {
+    res.send("No App Specified");
+    return "No App Specified";
+  }
 
   CloudController.getInfo().then( (result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
@@ -122,6 +133,12 @@ router.get('/start', function(req, res, next) {
 });
 
 router.get('/start', function(req, res, next) {
+
+  var appid = req.query.appid;
+  if (!appid) {
+    res.send("No App Specified");
+    return "No App Specified";
+  }
   
     CloudController.getInfo().then( (result) => {
       UsersUAA.setEndPoint(result.authorization_endpoint);
