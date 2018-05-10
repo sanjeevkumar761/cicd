@@ -54,12 +54,12 @@ router.get('/add', function(req, res, next) {
 
   var imagename = req.query.imagename;
   var appname = req.query.appname;
-  if (imagename=="") {
-    imagename = "sanjeevkumar761/cicd:latest"
+  if (!imagename) {
+    imagename = "sanjeevkumar761/cf_ms:rene"
   } else {
     imagename = "sanjeevkumar761/" + imagename
   };
-  if (appname=="") { appname = "deploytest" };
+  if (!appname) { appname = "deploytest" };
 
 var appoptions = {
   "name": appname,
@@ -77,10 +77,14 @@ var appoptions = {
     console.log( "Adding " + appname + " from " + imagename);
     Apps.setToken(result);
     //Apps.remove(appID);
-    Apps.add(appoptions);
-    //Apps.remove(appID);
-    res.send("App Added: " + appname);
-    return "App Added: " + appname;
+    Apps.add(appoptions).then( (resultAdd) => {
+      res.send(resultAdd);
+      return resultAdd;
+    }).catch( (reasonAdd) => {
+      console.error("Error: " + reasonAdd);
+      res.send ("Error: " + reasonAdd)
+      return
+    })
   }).then( (result) => {
     console.log(result);
   }).catch( (reason) => {
