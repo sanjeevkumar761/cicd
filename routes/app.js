@@ -13,9 +13,9 @@ const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
 const Apps = new (require("cf-nodejs-client")).Apps(endpoint);
 
 
-const spaceID = "79a6cdb5-296b-46bd-b28a-a433492009de";
-const orgID = "53f33523-70ab-4c1a-b8ac-bfb233a0d853";
-var appID = "d1d5bf9e-ecbd-4670-a3bf-7200bbe20228";
+const spaceid = "79a6cdb5-296b-46bd-b28a-a433492009de";
+const orgid = "53f33523-70ab-4c1a-b8ac-bfb233a0d853";
+var appid = "c8fae746-2960-436d-85e4-81e583bd642f";
 
 router.get('/', function(req, res, next) {
 
@@ -41,16 +41,20 @@ router.get('/add', function(req, res, next) {
 
   // var pushCommand = "cf push elbinapp --docker-image sanjeevkumar761/cf_ms:ElbinAbey";
 
-  var imageName = req.query.imageName;
-  var appName = req.query.appName;
-  if (imageName=="") { imageName = "sanjeevkumar761/cf_ms:rene" };
-  if (appName=="") { appName = "deploytest" };
+  var imagename = req.query.imagename;
+  var appname = req.query.appname;
+  if (imagename=="") {
+    imagename = "sanjeevkumar761/cicd:latest"
+  } else {
+    imagename = "sanjeevkumar761/" + imagename
+  };
+  if (appname=="") { appname = "deploytest" };
 
-var appOptions = {
-  "name": appName,
-  "space_guid": spaceID,
-  "docker_image" : imageName,
-  "organization_guid" : orgID,
+var appoptions = {
+  "name": appname,
+  "space_guid": spaceid,
+  "docker_image" : imagename,
+  "organization_guid" : orgid,
   "instances" : 1,
   "requested_state": "started"
 }
@@ -59,12 +63,13 @@ var appOptions = {
     UsersUAA.setEndPoint(result.authorization_endpoint);
     return UsersUAA.login(username, password);
   }).then( (result) => {
+    console.log( "Adding " + appname + " from " + imagename);
     Apps.setToken(result);
     //Apps.remove(appID);
-    Apps.add(appOptions);
+    Apps.add(appoptions);
     //Apps.remove(appID);
-    res.send("App Added: "+ appName);
-    return "App Added: "+ appName;
+    res.send("App Added: " + appname);
+    return "App Added: " + appname;
   }).then( (result) => {
     console.log(result);
   }).catch( (reason) => {
@@ -82,7 +87,7 @@ router.get('/remove', function(req, res, next) {
     return UsersUAA.login(username, password);
   }).then( (result) => {
     Apps.setToken(result);
-    Apps.remove(appID);
+    Apps.remove(appid);
     res.send("App Removed");
     return "App Removed";
   }).then( (result) => {
@@ -102,7 +107,7 @@ router.get('/start', function(req, res, next) {
     return UsersUAA.login(username, password);
   }).then( (result) => {
     Apps.setToken(result);
-    Apps.start(appID);
+    Apps.start(appid);
     //Apps.remove(appID);
     res.send("App Started");
     return "App Started";
@@ -123,7 +128,7 @@ router.get('/start', function(req, res, next) {
       return UsersUAA.login(username, password);
     }).then( (result) => {
       Apps.setToken(result);
-      Apps.stop(appID);
+      Apps.stop(appid);
       //Apps.remove(appID);
       res.send("App Stopped");
       return "App Stopped";
@@ -138,6 +143,7 @@ router.get('/start', function(req, res, next) {
   });
 
 module.exports = router;
+
 
 
 
