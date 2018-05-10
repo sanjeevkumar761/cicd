@@ -1,7 +1,8 @@
 "use strict";
 
 var express = require('express');
-var cfNodejsClient = require("cf-nodejs-client")
+var cfNodejsClient = require("cf-nodejs-client");
+var tableify = require('tableify');
 var router = express.Router();
 
 const endpoint = "https://api.cf.eu10.hana.ondemand.com";
@@ -16,13 +17,24 @@ const Apps = new (require("cf-nodejs-client")).Apps(endpoint);
 
 router.get('/', function(req, res, next) {
 
+  var format = req.query.format;
+
   CloudController.getInfo().then( (result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
     return UsersUAA.login(username, password);
   }).then( (result) => {
     Apps.setToken(result);
     Apps.getApps().then( (resultApps) => {
-      res.send(resultApps);
+      var resp
+      if (result=="JSON") {
+        resp = resultApps
+      } else {
+        resp = "<html>";
+        resp += '<head><link rel="stylesheet" type="text/css" href="stylesheets/style.css"></head>'
+        resp += tableify (resultApps);
+        resp += "</html>"
+      }
+      res.send(resp);
     });
     return "Apps Listed";
   }).then( (result) => {
