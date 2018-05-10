@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
     Apps.setToken(result);
     Apps.getApps().then( (resultApps) => {
       var resp
-      if (result=="JSON") {
+      if (format=="JSON") {
         resp = resultApps
       } else {
         resp = "<html>";
