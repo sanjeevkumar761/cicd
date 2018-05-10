@@ -144,7 +144,7 @@ router.get('/start', function(req, res, next) {
   
 });
 
-router.get('/start', function(req, res, next) {
+router.get('/stop', function(req, res, next) {
 
   var appid = req.query.appid;
   if (!appid) {
