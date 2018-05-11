@@ -25,16 +25,15 @@ router.get('/', function(req, res, next) {
   }).then( (result) => {
     Apps.setToken(result);
     Apps.getApps().then( (resultApps) => {
-      var resp
       if (format=="JSON") {
-        resp = resultApps
+        res.send(resultApps);
       } else {
-        resp = "<html>";
-        resp += '<head><link rel="stylesheet" type="text/css" href="stylesheets/style.css"></head>'
-        resp += tableify (resultApps);
-        resp += "</html>"
+        res.render('apps', {
+          title: 'Listing ' + resultApps.total_results + " Apps",
+          apps: resultApps.resources,
+          table: tableify (resultApps.resources)
+        });
       }
-      res.send(resp);
     });
     return "Apps Listed";
   }).then( (result) => {
