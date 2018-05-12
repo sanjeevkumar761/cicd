@@ -9,8 +9,8 @@ function appAction(guid, url, m) {
         if (guid) messagetext.innerText = "Completed " + m + " (refreshing App list...)";
         location.reload();
     }
-    xhr.onerror = function err(data) {
-        if (guid) messagetext.innerText = "Error " + m;
+    xhr.onerror = function err() {
+        if (guid) messagetext.innerText = "Error: " + this.statusText;
     }
     xhr.open('GET', url + guid, true);
     xhr.send();

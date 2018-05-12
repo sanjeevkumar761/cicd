@@ -8,3 +8,14 @@ body, html {
   width:80%;
   margin: auto;
 }
+
+.app-STARTED {
+  color:green;
+  font-weight:bold;
+}
+
+.app-STOPPED {
+  color:red;
+  font-weight:bold;
+}
+

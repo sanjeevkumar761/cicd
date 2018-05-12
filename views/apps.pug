@@ -23,7 +23,7 @@ block content
               +icon("info-sign")
             td
               b #{app.entity.name}
-            td #{app.entity.state}
+            td(class="app-"+app.entity.state) #{app.entity.state}
             td #{app.metadata.guid}
             td #{app.entity.docker_image}
 

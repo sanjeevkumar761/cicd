@@ -40,7 +40,7 @@ router.get('/', function (req, res, next) {
     console.log(result);
   }).catch((reason) => {
     console.error("Error: " + reason);
-    res.send("Error: " + reason)
+    res.error("Error: " + reason)
     return
   });
 
