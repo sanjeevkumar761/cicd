@@ -1,35 +1,45 @@
 extends layout
 
 block content
-  h1= title
-  h3= subtitle
-  div
+
+  // Everything in main panel
+  +panel-primary(title + " " + subtitle)
     table.table.table-striped.table-hover
       thead.thead-dark
+        // Header Row
         tr
+          th Info
           th Name
           th State
           th GUID
-          th URI
+          th Docker Image
           th Actions
       tbody 
         each app in apps
+
+          //Row for each app
           tr
-            td.clickable(data-toggle='collapse', data-target='#collapse-'+app.metadata.guid) #{app.entity.name}
+            td.clickable(data-toggle='collapse', data-target='#details-'+app.metadata.guid)
+              +icon("info-sign")
+            td
+              b #{app.entity.name}
             td #{app.entity.state}
             td #{app.metadata.guid}
-            td #{app.metadata.url}
+            td #{app.entity.docker_image}
+
+            //Actions for each app
             td
-              span(onclick='appStart("'+app.metadata.guid+'");')
-                //+icon("play")
+              span.clickable(onclick='appStart("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-success("Start")
-              span(onclick='appStop("'+app.metadata.guid+'");')
+              span.clickable(onclick='appStop("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid style='margin-left:4px;margin-right:4px;')
                 +btn-warning("Stop")
-              span(onclick='appDelete("'+app.metadata.guid+'");')
+              span.clickable(onclick='appDelete("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-danger("Delete")
-          tr
-            td(colspan='5')
-              div.sub(id="collapse-"+app.metadata.guid).collapse
+         
+          //Hidden row for showing app details
+          tr(id="details-"+app.metadata.guid).collapse
+            td(colspan='6')
+              div.sub
                 table.table.table-striped.table-dark
                   thead.thead-inverse
                     tr
@@ -39,6 +49,21 @@ block content
                     tr
                       td #{app.entity[ent]}
                       td #{ent}
-
+          tr(id="message-"+app.metadata.guid).collapse
+            td(colspan='6')
+              div.sub(id="messagetext-"+app.metadata.guid)
+                +alert-info("")
+        
+        //Row for adding new apps
+        tr
+          td(colspan="1")
+            +icon("plus")
+          td(colspan="2")
+            +input("text","txtAppName","App Name","App Name")
+          td(colspan="2")
+            +input("text","txtImageName","App Docker Image","App Docker Image")
+          td(colspan="1")
+            span.align-bottom(onclick= 'appAdd(null, null)')
+              +btn-success("Add New App")
   h1
    

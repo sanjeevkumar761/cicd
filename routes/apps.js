@@ -50,6 +50,7 @@ router.get('/', function (req, res, next) {
 router.get('/add', function (req, res, next) {
 
   // var pushCommand = "cf push elbinapp --docker-image sanjeevkumar761/cf_ms:ElbinAbey";
+  // http://localhost:3000/apps/add?imagename=cf_ms:rene&appname=rene2
 
   var imagename = req.query.imagename;
   var appname = req.query.appname;
@@ -65,7 +66,6 @@ router.get('/add', function (req, res, next) {
     "space_guid": spaceid,
     "docker_image": imagename,
     "organization_guid": orgid,
-    "instances": 1,
     "requested_state": "started"
   }
 
@@ -75,7 +75,6 @@ router.get('/add', function (req, res, next) {
   }).then((result) => {
     console.log("Adding " + appname + " from " + imagename);
     Apps.setToken(result);
-    //Apps.remove(appID);
     Apps.add(appoptions).then((resultAdd) => {
       res.send(resultAdd);
       return resultAdd;
