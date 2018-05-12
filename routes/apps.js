@@ -66,7 +66,9 @@ router.get('/add', function (req, res, next) {
     "space_guid": spaceid,
     "docker_image": imagename,
     "organization_guid": orgid,
-    "requested_state": "started"
+    "requested_state": "STARTED",
+    "instances": 1,
+    "memory": 512
   }
 
   CloudController.getInfo().then((result) => {

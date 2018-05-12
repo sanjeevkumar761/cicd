@@ -6,7 +6,7 @@ function appAction(guid, url, m) {
         messagetext.innerText = m;
     }
     xhr.onload = function loaded(data) {
-        if (guid) messagetext.innerText = "Completed " + m + " (refreshing APp list...)";
+        if (guid) messagetext.innerText = "Completed " + m + " (refreshing App list...)";
         location.reload();
     }
     xhr.onerror = function err(data) {
@@ -28,6 +28,10 @@ function appDelete(guid) {
     let decision = confirm("Are you sure you want to delete app with GUID: "+guid+"?");
     if (decision) {
         appAction(guid, "apps/remove?appid=", "Deleting App")
+    } else {
+        let message = document.getElementById("message-" + guid);
+        message.hide();
+        return (false);
     }
 }
 
