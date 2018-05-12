@@ -1,7 +1,11 @@
+include ../node_modules/pug-bootstrap/_bootstrap.pug
+
 doctype html
 html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="/js/appFunctions.js")
+    
   body
     block content

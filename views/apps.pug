@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  h1= title
+  h3= subtitle
+  div
+    table.table.table-striped.table-hover
+      thead.thead-dark
+        tr
+          th Name
+          th State
+          th GUID
+          th URI
+          th Actions
+      tbody 
+        each app in apps
+          tr
+            td.clickable(data-toggle='collapse', data-target='#collapse-'+app.metadata.guid) #{app.entity.name}
+            td #{app.entity.state}
+            td #{app.metadata.guid}
+            td #{app.metadata.url}
+            td
+              span(onclick='appStart("'+app.metadata.guid+'");')
+                //+icon("play")
+                +btn-success("Start")
+              span(onclick='appStop("'+app.metadata.guid+'");')
+                +btn-warning("Stop")
+              span(onclick='appDelete("'+app.metadata.guid+'");')
+                +btn-danger("Delete")
+          tr
+            td(colspan='5')
+              div.sub(id="collapse-"+app.metadata.guid).collapse
+                table.table.table-striped.table-dark
+                  thead.thead-inverse
+                    tr
+                      th Property
+                      th Details
+                  each ent in app.entity
+                    tr
+                      td #{app.entity[ent]}
+                      td #{ent}
+
+  h1
+   

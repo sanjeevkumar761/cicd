@@ -1,18 +1,18 @@
 {
   "name": "cicd",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "cf-nodejs-client": "0.13.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
-    "jade": "~1.11.0",
     "morgan": "~1.9.0",
-    "cf-nodejs-client": "0.13.0",
-    "tableify": "1.1.0"
+    "pug": "2.0.3",
+    "pug-bootstrap": "0.0.15"
   }
 }
