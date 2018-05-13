@@ -7,7 +7,7 @@ function event(req, res, next) {
   let action = req.params.action;
   console.log ("Heard event " + action);
   console.log ("with payload:");
-  console.log (request.body);
+  console.log (req.body);
   res.send("Heard event " + action );
 }
 
