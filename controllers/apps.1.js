@@ -1,5 +1,7 @@
 var cfNodejsClient = require("cf-nodejs-client");
 
+const endpoint = "https://api.cf.eu10.hana.ondemand.com";
+
 const CloudController = new (require("cf-nodejs-client")).CloudController(endpoint);
 const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
 const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
