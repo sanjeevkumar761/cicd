@@ -1,6 +1,6 @@
 
 function workflowlist(req, res, next) {
-  res.send("No Workflows");
+  res.send("1) Buildprocess");
 }
 
 function event(req, res, next) {
