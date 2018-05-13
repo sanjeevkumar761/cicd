@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var appcontroller = require('../controllers/apps');
+var ac = require('../controllers/apps');
 
 // Handle requests to apps
-router.get('/', appcontroller.applist);
+router.get('/', ac.applist);
 //router.get('/:id', appsInfo);
-router.get('/add', appcontroller.appadd);
-router.get('/:id/remove', appcontroller.appremove);
-router.get('/:id/start', appcontroller.appstart);
-router.get('/:id/stop', appcontroller.appstop);
+router.get('/add', ac.appadd);
+router.get('/:id/remove', ac.appremove);
+router.get('/:id/start', ac.appstart);
+router.get('/:id/stop', ac.appstop);
 
 module.exports = router;
 
