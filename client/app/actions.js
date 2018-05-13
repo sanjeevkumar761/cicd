@@ -12,7 +12,7 @@ function appaction(guid, action, m) {
     xhr.onerror = function err() {
         if (guid) messagetext.innerText = "Error: " + this.statusText;
     }
-    let url = guid + "/" + action;
+    let url = "/apps/" + guid + "/" + action;
     xhr.open('GET', url, true);
     xhr.send();
 }
@@ -46,15 +46,15 @@ function appadd(imagename, appname) {
 
     if ((appname != "") && (imagename != "")) {
         messagetext = document.getElementById("messagetext-new").firstChild;
-        messagetext.innerText = "Trying to add new app: "+appname+" from image: "+imagename;
+        messagetext.innerText = "Trying to add new app: " + appname + " from image: " + imagename;
         let xhr = new XMLHttpRequest();
-        let url = "add?imagename=" + imagename + "&appname=" + appname
+        let url = "/apps/add?imagename=" + imagename + "&appname=" + appname
         xhr.onload = function loaded(data) {
-            messagetext.innerText = "Added new app: "+appname+" from image: "+imagename+ " (refreshing App list...)";
+            messagetext.innerText = "Added new app: " + appname + " from image: " + imagename + " (refreshing App list...)";
             location.reload();
         }
         xhr.onerror = function err(data) {
-            messagetext.innerText = "Error adding new app: "+appname+" from image: "+imagename;
+            messagetext.innerText = "Error adding new app: " + appname + " from image: " + imagename;
         }
         xhr.open('GET', url, true);
         xhr.send();

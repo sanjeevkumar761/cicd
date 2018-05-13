@@ -65,6 +65,7 @@ const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
       "space_guid": spaceid,
       "docker_image": imagename,
       "organization_guid": orgid,
+      "start_command": "npm start",
       "requested_state": "STARTED",
       "instances": 1,
       "memory": 512
