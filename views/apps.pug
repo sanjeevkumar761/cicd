@@ -33,6 +33,8 @@ block content
                 +btn-success("Start")
               span.clickable(onclick='appstop("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-warning("Stop")
+              span.clickable(onclick='appupdate("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
+                +btn-info("Update")
               span.clickable(onclick='appdelete("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-danger("Delete")
          

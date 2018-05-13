@@ -94,6 +94,55 @@ function appadd(req, res, next) {
   });
 }
 
+function appupdate(req, res, next) {
+
+  // var pushCommand = "cf push elbinapp --docker-image sanjeevkumar761/cf_ms:ElbinAbey";
+  // http://localhost:3000/apps/add?imagename=cf_ms:rene&appname=rene2
+
+  var imagename = req.query.imagename;
+  var appname = req.query.appname;
+  var appid = req.params.id;
+
+  var appoptions = {}
+  /*
+  var appoptions = {
+    "name": appname,
+    "space_guid": spaceid,
+    "docker_image": imagename,
+    "organization_guid": orgid,
+  }
+  */
+  
+
+  console.log("updating " + appid);
+
+  if (!appid) {
+    res.send("No App Specified");
+    return "No App Specified";
+  }
+
+  CloudController.getInfo().then((result) => {
+    UsersUAA.setEndPoint(result.authorization_endpoint);
+    return UsersUAA.login(username, password);
+  }).then((result) => {
+    CloudApps.setToken(result);
+    CloudApps.update(appid, appoptions).then((resultUpdate) => {
+      res.send(resultUpdate);
+      return resultUpdate;
+    }).catch((reasonUpdate) => {
+      console.error("Error: " + reasonUpdate);
+      res.send("Error: " + reasonUpdate)
+      return
+    })
+  }).then((result) => {
+    console.log(result);
+  }).catch((reason) => {
+    console.error("Error: " + reason);
+    res.send("Error: " + reason)
+    return
+  });
+}
+
 function appremove(req, res, next) {
 
   var appid = req.params.id;
@@ -180,6 +229,7 @@ module.exports = {
   applist,
   appadd,
   appstart,
+  appupdate,
   appstop,
   appremove
 };

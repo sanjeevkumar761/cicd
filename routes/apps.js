@@ -6,6 +6,7 @@ var ac = require('../controllers/apps');
 router.get('/', ac.applist);
 //router.get('/:id', appsInfo);
 router.get('/add', ac.appadd);
+router.get('/:id/update', ac.appupdate);
 router.get('/:id/remove', ac.appremove);
 router.get('/:id/start', ac.appstart);
 router.get('/:id/stop', ac.appstop);

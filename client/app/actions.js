@@ -25,6 +25,10 @@ function appstop(guid) {
     appaction(guid, "stop", "Stopping App")
 }
 
+function appupdate(guid) {
+    appaction(guid, "update", "Updating App")
+}
+
 function appdelete(guid) {
     let decision = confirm("Are you sure you want to delete app with GUID: " + guid + "?");
     if (decision) {
