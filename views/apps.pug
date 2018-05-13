@@ -42,15 +42,17 @@ block content
           tr(id="details-"+app.metadata.guid).collapse
             td(colspan='6')
               div.sub
-                table.table.table-striped.table-dark
-                  thead.thead-inverse
+                +panel-info(app.entity.name)
+                  table.table.table-striped.table-dark
+                   thead.thead-inverse
                     tr
                       th Property
                       th Details
-                  each ent in app.entity
-                    tr
-                      td #{app.entity[ent]}
-                      td #{ent}
+                    each ent, key in app.entity
+                      tr
+                        td
+                          b #{key}
+                        td #{ent}
 
           //Hidden row for showing app action messages
           tr(id="message-"+app.metadata.guid).collapse
