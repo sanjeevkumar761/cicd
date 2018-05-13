@@ -29,11 +29,11 @@ block content
 
             //Actions for each app
             td
-              span.clickable(onclick='appStart("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
+              span.clickable(onclick='appstart("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-success("Start")
-              span.clickable(onclick='appStop("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid style='margin-left:4px;margin-right:4px;')
+              span.clickable(onclick='appstop("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-warning("Stop")
-              span.clickable(onclick='appDelete("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
+              span.clickable(onclick='appdelete("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-danger("Delete")
          
           //Hidden row for showing app details
@@ -49,6 +49,8 @@ block content
                     tr
                       td #{app.entity[ent]}
                       td #{ent}
+
+          //Hidden row for showing app action messages
           tr(id="message-"+app.metadata.guid).collapse
             td(colspan='6')
               div.sub(id="messagetext-"+app.metadata.guid)
@@ -63,7 +65,13 @@ block content
           td(colspan="2")
             +input("text","txtImageName","App Docker Image","App Docker Image")
           td(colspan="1")
-            span.align-bottom(onclick= 'appAdd(null, null)')
+            span.clickable(onclick='appadd(null, null)', data-toggle='collapse', data-target='#message-new')
               +btn-success("Add New App")
+
+        //Hidden row for messages adding new apps
+        tr(id="message-new").collapse
+          td(colspan='6')
+            div.sub(id="messagetext-new")
+              +alert-info("")
   h1
    
