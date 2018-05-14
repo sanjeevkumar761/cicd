@@ -19,7 +19,8 @@ body, html {
   font-weight:bold;
 }
 
-.clickable {
-  padding: 3px;
+.clickablebutton {
+  margin: 3px;
+  float: left;
 }
 

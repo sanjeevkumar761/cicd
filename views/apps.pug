@@ -31,13 +31,13 @@ block content
 
             //Actions for each app
             td
-              span.clickable(onclick='appstart("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
+              div.clickablebutton(onclick='appstart("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-success("Start")
-              span.clickable(onclick='appstop("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
+              div.clickablebutton(onclick='appstop("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-warning("Stop")
-              span.clickable(onclick='appupdate("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
+              div.clickablebutton(onclick='appupdate("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-info("Update")
-              span.clickable(onclick='appdelete("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
+              div.clickablebutton(onclick='appdelete("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
                 +btn-danger("Delete")
          
           //Hidden row for showing app details
