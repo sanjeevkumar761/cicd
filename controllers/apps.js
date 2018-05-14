@@ -1,14 +1,18 @@
 var cfNodejsClient = require("cf-nodejs-client");
 
+//get environment variables
+const endpoint = process.env.CICD_ENDPOINT;
+const un = process.env.CICD_UN;
+const pw = process.env.CICD_PW;
+const spaceid = process.env.CICD_SPACEID;
+const orgid = process.env.CICD_ORGID;
+
+//Setup clpud objects
 const CloudController = new (require("cf-nodejs-client")).CloudController(endpoint);
 const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
 const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
 
 // App functions
-function appinfo(req, res, next) {
-  let id = req.params.id;
-  console.log(id);
-}
 
 function applist(req, res, next) {
 
