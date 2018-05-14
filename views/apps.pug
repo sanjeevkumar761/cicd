@@ -4,6 +4,7 @@ block content
 
   // Everything in main panel
   +panel-primary(title + " " + subtitle)
+    //+table.table.table-striped.table-hover
     table.table.table-striped.table-hover
       thead.thead-dark
         // Header Row
@@ -11,8 +12,8 @@ block content
           th Info
           th Name
           th State
-          th GUID
-          th Docker Image
+          th.hidden-sm.hidden-xs GUID
+          th.hidden-sm.hidden-xs Docker Image
           th Actions
       tbody 
         each app in apps
@@ -24,8 +25,8 @@ block content
             td
               b #{app.entity.name}
             td(class="app-"+app.entity.state) #{app.entity.state}
-            td #{app.metadata.guid}
-            td #{app.entity.docker_image}
+            td.hidden-sm.hidden-xs #{app.metadata.guid}
+            td.hidden-sm.hidden-xs #{app.entity.docker_image}
 
             //Actions for each app
             td
