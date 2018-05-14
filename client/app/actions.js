@@ -1,6 +1,6 @@
 function appaction(guid, action, m, type) {
 
-    if (!type) type="GET" 
+    if (!type) type = "GET"
     let xhr = new XMLHttpRequest();
     let messagetext;
     if (guid) {
@@ -34,7 +34,7 @@ function appupdate(guid) {
 function appdelete(guid) {
     let decision = confirm("Are you sure you want to delete app with GUID: " + guid + "?");
     if (decision) {
-        appaction(guid, "remove", "Deleting App")
+        appaction(guid, "remove", "Deleting App", "DELETE")
     } else {
         let message = document.getElementById("message-" + guid);
         message.hide();
@@ -55,11 +55,11 @@ function appadd(imagename, appname) {
         messagetext.innerText = "Trying to add new app: " + appname + " from image: " + imagename;
         let xhr = new XMLHttpRequest();
         let url = "/apps/add";
-        // let url = "/apps/add?imagename=" + imagename + "&appname=" + appname
-        let payload = {
-            "appname": appname,
-            "imagename": imagename
-        }
+        let data = {};
+        data.appname = appname;
+        data.imagename = imagename;
+        let jsondata = JSON.stringify(data);
+        
         xhr.onload = function loaded(data) {
             messagetext.innerText = "Added new app: " + appname + " from image: " + imagename + " (refreshing App list...)";
             location.reload();
@@ -68,7 +68,9 @@ function appadd(imagename, appname) {
             messagetext.innerText = "Error adding new app: " + appname + " from image: " + imagename;
         }
         // change to put and add payload
-        xhr.open('GET', url, true);
-        xhr.send();
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.send(jsondata);
+        
     }
 }

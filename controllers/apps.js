@@ -1,4 +1,5 @@
 var cfNodejsClient = require("cf-nodejs-client");
+//var bodyParser = require("body-parser");
 
 //get environment variables
 const endpoint = process.env.CICD_ENDPOINT;
@@ -41,8 +42,8 @@ function applist(req, res, next) {
     console.log(result);
   }).catch((reason) => {
     console.error("Error: " + reason);
-    res.error("Error: " + reason)
-    return
+    //res.error("Error: " + reason);
+    return;
   });
 }
 
@@ -51,13 +52,20 @@ function appadd(req, res, next) {
   // var pushCommand = "cf push elbinapp --docker-image sanjeevkumar761/cf_ms:ElbinAbey";
   // http://localhost:3000/apps/add?imagename=cf_ms:rene&appname=rene2
 
-  var imagename = req.query.imagename;
-  var appname = req.query.appname;
+  console.log (req.body);
+  console.log (req.body.imagename);
+
+  let imagename = req.body.imagename;
+  let appname = req.body.appname;
+
+  
+
   if (!imagename) {
     imagename = "sanjeevkumar761/cf_ms:rene"
   } else {
     imagename = "sanjeevkumar761/" + imagename
   };
+
   if (!appname) { appname = "deploytest" };
   var appoptions = {
     "name": appname,
