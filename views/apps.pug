@@ -5,6 +5,7 @@ block content
   // Everything in main panel
   +panel-primary(title + " " + subtitle)
     //+table.table.table-striped.table-hover
+    // update to compact table?
     table.table.table-striped.table-hover
       thead.thead-dark
         // Header Row
@@ -63,15 +64,13 @@ block content
         
         //Row for adding new apps
         tr
-          td(colspan="1")
-            +icon("plus")
-          td(colspan="2")
-            +input("text","txtAppName","App Name","App Name")
-          td(colspan="2")
-            +input("text","txtImageName","App Docker Image","App Docker Image")
-          td(colspan="1")
-            span.clickable(onclick='appadd(null, null)', data-toggle='collapse', data-target='#message-new')
-              +btn-success("Push App")
+          td(colspan="6")
+            div
+              +icon("plus")
+              +input("text","txtAppName","App Name","App Name")
+              +input("text","txtImageName","App Docker Image","App Docker Image")
+              span.clickable(onclick='appadd(null, null)', data-toggle='collapse', data-target='#message-new')
+                +btn-success("Push App")
 
         //Hidden row for messages adding new apps
         tr(id="message-new").collapse
