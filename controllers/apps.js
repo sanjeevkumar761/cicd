@@ -4,6 +4,12 @@ const CloudController = new (require("cf-nodejs-client")).CloudController(endpoi
 const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
 const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
 
+const endpoint = "https://api.cf.eu10.hana.ondemand.com";
+const un = "sanjeev_kumar@rcomext.com";
+const pw = "Hackathon8%2";
+const spaceid = "79a6cdb5-296b-46bd-b28a-a433492009de";
+const orgid = "53f33523-70ab-4c1a-b8ac-bfb233a0d853";
+
 // App functions
 function appinfo(req, res, next) {
   let id = req.params.id;
@@ -16,7 +22,7 @@ function applist(req, res, next) {
 
   CloudController.getInfo().then((result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
-    return UsersUAA.login(username, password);
+    return UsersUAA.login(un, pw);
   }).then((result) => {
     CloudApps.setToken(result);
     CloudApps.getApps().then((resultApps) => {
@@ -67,7 +73,7 @@ function appadd(req, res, next) {
 
   CloudController.getInfo().then((result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
-    return UsersUAA.login(username, password);
+    return UsersUAA.login(un, pw);
   }).then((result) => {
     console.log("Adding " + appname + " from " + imagename);
     CloudApps.setToken(result);
@@ -117,7 +123,7 @@ function appupdate(req, res, next) {
 
   CloudController.getInfo().then((result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
-    return UsersUAA.login(username, password);
+    return UsersUAA.login(un, pw);
   }).then((result) => {
     CloudApps.setToken(result);
     CloudApps.update(appid, appoptions).then((resultUpdate) => {
@@ -149,7 +155,7 @@ function appremove(req, res, next) {
 
   CloudController.getInfo().then((result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
-    return UsersUAA.login(username, password);
+    return UsersUAA.login(un, pw);
   }).then((result) => {
     CloudApps.setToken(result);
     CloudApps.remove(appid);
@@ -176,7 +182,7 @@ function appstart(req, res, next) {
 
   CloudController.getInfo().then((result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
-    return UsersUAA.login(username, password);
+    return UsersUAA.login(un, pw);
   }).then((result) => {
     CloudApps.setToken(result);
     CloudApps.start(appid);
@@ -203,7 +209,7 @@ function appstop(req, res, next) {
 
   CloudController.getInfo().then((result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
-    return UsersUAA.login(username, password);
+    return UsersUAA.login(un, pw);
   }).then((result) => {
     CloudApps.setToken(result);
     CloudApps.stop(appid);
