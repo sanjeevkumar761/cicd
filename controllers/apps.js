@@ -1,11 +1,5 @@
 var cfNodejsClient = require("cf-nodejs-client");
 
-const endpoint = "https://api.cf.eu10.hana.ondemand.com";
-const un = "sanjeev_kumar@rcomext.com";
-const pw = "Hackathon8%2";
-const spaceid = "79a6cdb5-296b-46bd-b28a-a433492009de";
-const orgid = "53f33523-70ab-4c1a-b8ac-bfb233a0d853";
-
 const CloudController = new (require("cf-nodejs-client")).CloudController(endpoint);
 const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
 const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
