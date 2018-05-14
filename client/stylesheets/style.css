@@ -6,6 +6,8 @@ body, html {
 
 .sub {
   margin: auto;
+  width:100%;
+  word-break: break-all;
 }
 
 .app-STARTED {

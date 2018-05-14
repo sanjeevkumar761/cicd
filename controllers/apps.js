@@ -1,5 +1,4 @@
 var cfNodejsClient = require("cf-nodejs-client");
-//var bodyParser = require("body-parser");
 
 //get environment variables
 const endpoint = process.env.CICD_ENDPOINT;
