@@ -13,7 +13,6 @@ const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
 const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
 
 // App functions
-
 function applist(req, res, next) {
 
   let format = req.query.format;
