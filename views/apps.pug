@@ -3,11 +3,11 @@ extends layout
 block content
 
   // Everything in main panel
-  +panel-primary(title + " " + subtitle)
+  +panel-primary(title + " - " + subtitle)
     //+table.table.table-striped.table-hover
     // update to compact table?
-    table.table.table-striped.table-hover
-      thead.thead-dark
+    table.table.table-striped
+      thead
         // Header Row
         tr
           th Info
@@ -65,12 +65,18 @@ block content
         //Row for adding new apps
         tr
           td(colspan="6")
-            div
-              +icon("plus")
-              +input("text","txtAppName","App Name","App Name")
-              +input("text","txtImageName","App Docker Image","App Docker Image")
-              span.clickable(onclick='appadd(null, null)', data-toggle='collapse', data-target='#message-new')
-                +btn-success("Push App")
+            div.row
+              div.col-md-2
+                +icon("plus")
+              div.col-md-5
+                +input("text","txtAppName","App Name","App Name")
+              div.col-md-5
+                +input("text","txtImageName","App Docker Image","App Docker Image")
+            div.row
+              div.col-md-2
+              div.col-md-10
+                span.clickable(onclick='appadd(null, null)', data-toggle='collapse', data-target='#message-new')
+                 +btn-success("Push App")
 
         //Hidden row for messages adding new apps
         tr(id="message-new").collapse

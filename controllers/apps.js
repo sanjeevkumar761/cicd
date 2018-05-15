@@ -30,8 +30,8 @@ function applist(req, res, next) {
         let appcount = resultApps.resources.length;
         // Render the response using the PUG template and passing in any required values
         res.render('apps', {
-          title: 'Listing ' + appcount + " Apps",
-          subtitle: 'at ' + endpoint,
+          title: "Swiss Re",
+          subtitle: 'Listing ' + appcount + " Apps",
           apps: resultApps.resources,
         });
       }
@@ -40,8 +40,8 @@ function applist(req, res, next) {
   }).then((result) => {
     console.log(result);
   }).catch((reason) => {
-    console.error("Error: " + reason);
-    //res.error("Error: " + reason);
+    console.error(reason);
+    res.error(reason);
     return;
   });
 }
