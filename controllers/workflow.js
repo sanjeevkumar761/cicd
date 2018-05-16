@@ -1,3 +1,39 @@
+var cfNodejsClient = require("cf-nodejs-client");
+
+//get environment variables
+const endpoint = process.env.CICD_ENDPOINT;
+const un = process.env.CICD_UN;
+const pw = process.env.CICD_PW;
+const spaceid = process.env.CICD_SPACEID;
+const orgid = process.env.CICD_ORGID;
+
+//Setup clpud objects
+const CloudController = new (require("cf-nodejs-client")).CloudController(endpoint);
+const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
+const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
+
+
+function appremove(appid) {
+
+  console.log("removing " + appid);
+
+  if (!appid) {
+    return "No App Specified";
+  }
+
+  CloudController.getInfo().then((result) => {
+    UsersUAA.setEndPoint(result.authorization_endpoint);
+    return UsersUAA.login(un, pw);
+  }).then((result) => {
+    CloudApps.setToken(result);
+    CloudApps.remove(appid);
+    return "App Removed";
+  }).then((result) => {
+    console.log(result);
+  }).catch((reason) => {
+    console.error("Error: " + reason);
+  });
+}
 
 function workflowlist(req, res, next) {
   res.send("1) Buildprocess");
@@ -8,7 +44,15 @@ function event(req, res, next) {
   console.log ("Heard event " + action);
   console.log ("with payload:");
   console.log (req.body);
-  res.send("Heard event " + action );
+
+if (action == "buildcomplete") {
+  let appid;
+
+  appremove (appid);
+}
+  
+
+  res.send("Processed " + event + action );
 }
 
 
