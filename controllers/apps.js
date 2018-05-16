@@ -31,8 +31,7 @@ function applist(req, res, next) {
         let appcount = resultApps.resources.length;
         // Render the response using the PUG template and passing in any required values
         res.render('apps', {
-          title: "Swiss Re",
-          subtitle: 'Listing ' + appcount + " Apps",
+          title: "Hackathon SR Apps",
           apps: resultApps.resources,
         });
       }
