@@ -13,7 +13,7 @@ RUN npm install
 # ---- Copy Files/Build ----
 FROM dependencies AS build  
 WORKDIR /app
-COPY src /app
+COPY . /app
 # Build react/vue/angular bundle static files
 # RUN npm run build
 

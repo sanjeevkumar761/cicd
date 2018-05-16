@@ -17,6 +17,8 @@ function applist(req, res, next) {
 
   let format = req.query.format;
 
+  console.log ("getting apps list from: " + endpoint)
+
   CloudController.getInfo().then((result) => {
     UsersUAA.setEndPoint(result.authorization_endpoint);
     return UsersUAA.login(un, pw);
@@ -40,7 +42,7 @@ function applist(req, res, next) {
     console.log(result);
   }).catch((reason) => {
     console.error(reason);
-    res.error(reason);
+    res.send(reason);
     return;
   });
 }

@@ -10,7 +10,7 @@ block content
       thead
         // Header Row
         tr
-          th Info
+          th.hidden-xs Info
           th Name
           th State
           th.hidden-sm.hidden-xs GUID
@@ -21,7 +21,7 @@ block content
 
           //Row for each app
           tr
-            td.clickable(data-toggle='collapse', data-target='#details-'+app.metadata.guid)
+            td.clickable.hidden-xs(data-toggle='collapse', data-target='#details-'+app.metadata.guid)
               +icon("info-sign")
             td
               b #{app.entity.name}
@@ -31,14 +31,30 @@ block content
 
             //Actions for each app
             td
+              div.clickablebutton.hidden-sm.hidden-md.hidden-lg.hidden-xl(data-toggle='collapse', data-target='#details-'+app.metadata.guid)
+                div.hidden-sm.hidden-md.hidden-lg.hidden-xl
+                  +icon("info-sign")
               div.clickablebutton(onclick='appstart("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
-                +btn-success("Start")
+                div.hidden-xs
+                  +btn-success("Start")
+                div.hidden-sm.hidden-md.hidden-lg.hidden-xl
+                  +icon("play")
               div.clickablebutton(onclick='appstop("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
-                +btn-warning("Stop")
+                div.hidden-xs
+                  +btn-warning("Stop")
+                div.hidden-sm.hidden-md.hidden-lg.hidden-xl
+                  +icon("stop")
               div.clickablebutton(onclick='appupdate("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
-                +btn-info("Update")
+                div.hidden-xs
+                  +btn-info("Update")
+                div.hidden-sm.hidden-md.hidden-lg.hidden-xl
+                  +icon("refresh")
               div.clickablebutton(onclick='appdelete("'+app.metadata.guid+'");', data-toggle='collapse', data-target='#message-'+app.metadata.guid)
-                +btn-danger("Delete")
+                div.hidden-xs
+                  +btn-danger("Delete")
+                div.hidden-sm.hidden-md.hidden-lg.hidden-xl
+                  +icon("remove")
+                  
          
           //Hidden row for showing app details
           tr(id="details-"+app.metadata.guid).collapse

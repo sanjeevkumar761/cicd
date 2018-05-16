@@ -23,6 +23,7 @@ body, html {
 .clickablebutton {
   margin: 3px;
   float: left;
+  cursor: pointer;
 }
 
 .clickable {
