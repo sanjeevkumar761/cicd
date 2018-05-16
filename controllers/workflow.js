@@ -46,13 +46,13 @@ function event(req, res, next) {
   console.log (req.body);
 
 if (action == "buildcomplete") {
-  let appid;
-
-  appremove (appid);
+  // let appid;
+  console.log ("recognised buildcomplete evenet and started preparing for deployment...")
+  // appremove (appid);
 }
   
 
-  res.send("Processed " + event + action );
+  res.send("Processed " + action );
 }
 
 
