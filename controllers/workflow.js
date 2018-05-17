@@ -1,58 +1,43 @@
 var cfNodejsClient = require("cf-nodejs-client");
-
-//get environment variables
-const endpoint = process.env.CICD_ENDPOINT;
-const un = process.env.CICD_UN;
-const pw = process.env.CICD_PW;
-const spaceid = process.env.CICD_SPACEID;
-const orgid = process.env.CICD_ORGID;
-
-//Setup clpud objects
-const CloudController = new (require("cf-nodejs-client")).CloudController(endpoint);
-const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
-const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
-
-
-function appremove(appid) {
-
-  console.log("removing " + appid);
-
-  if (!appid) {
-    return "No App Specified";
-  }
-
-  CloudController.getInfo().then((result) => {
-    UsersUAA.setEndPoint(result.authorization_endpoint);
-    return UsersUAA.login(un, pw);
-  }).then((result) => {
-    CloudApps.setToken(result);
-    CloudApps.remove(appid);
-    return "App Removed";
-  }).then((result) => {
-    console.log(result);
-  }).catch((reason) => {
-    console.error("Error: " + reason);
-  });
-}
+var ac = require('../controllers/apps');
 
 function workflowlist(req, res, next) {
   res.send("1) Buildprocess");
 }
 
-function event(req, res, next) {
+async function event(req, res, next) {
   let action = req.params.action;
-  console.log ("Heard event " + action);
-  console.log ("with payload:");
-  console.log (req.body);
+  console.log("Heard event " + action);
+  console.log("with payload:");
+  console.log(req.body);
+  let result = "Processed " + action;
 
-if (action == "buildcomplete") {
-  // let appid;
-  console.log ("recognised buildcomplete evenet and started preparing for deployment...")
-  // appremove (appid);
-}
-  
+  if (action == "buildcomplete") {
 
-  res.send("Processed " + action );
+    try {
+      // builld has completed
+      // find and replace apps based on this image
+      console.log("recognised buildcomplete evenet and started preparing for deployment...")
+      let imagename = "sanjeevkumar761/cf_ms:rene";
+      let app = await ac.getappbyimage(imagename);
+      let resultop;
+      if (app) {
+        console.log("found app to replace: " + app.name + " based on image: " + imagename)
+        resultop = await ac.appremovebyid(app.guid);
+        console.log(resultop);
+        req.body.imagename = imagename;
+        req.body.appname = app.name + "upd";
+        resultop = await ac.appadd(req);
+        console.log(resultop);
+      } else {
+        console.log("no app found for image: " + imagename)
+      }
+    } catch (e) {
+      result = e
+    }
+  }
+  res.send(result);
+  return (result);
 }
 
 
