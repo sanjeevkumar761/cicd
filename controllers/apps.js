@@ -1,4 +1,4 @@
-var cfNodejsClient = require("cf-nodejs-client");
+let cfNodejsClient = require("cf-nodejs-client");
 
 //get environment variables
 const endpoint = process.env.CICD_ENDPOINT;
@@ -15,11 +15,11 @@ const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
 // App functions
 async function getapps() {
   try {
-    var info = await CloudController.getInfo();
+    let info = await CloudController.getInfo();
     UsersUAA.setEndPoint(info.authorization_endpoint);
-    var result = await UsersUAA.login(un, pw);
+    let result = await UsersUAA.login(un, pw);
     CloudApps.setToken(result);
-    var resultApps = await CloudApps.getApps();
+    let resultApps = await CloudApps.getApps();
     return (resultApps);
   } catch (error) {
     console.error(error);
@@ -28,7 +28,7 @@ async function getapps() {
 }
 
 async function getappbyname(name) {
-  var apps = await getapps();
+  let apps = await getapps();
   let appcount = apps.resources.length;
 
   for (let n = 0; n < appcount; n++) {
@@ -43,7 +43,7 @@ async function getappbyname(name) {
 }
 
 async function getappbyimage(image) {
-  var apps = await getapps();
+  let apps = await getapps();
   let appcount = apps.resources.length;
 
   for (let n = 0; n < appcount; n++) {
@@ -57,27 +57,31 @@ async function getappbyimage(image) {
   }
 }
 
-async function applist(req, res, next) {
+async function applistcontrol(req, res, next) {
 
   let format = req.query.format;
   console.log("getting apps list from: " + endpoint);
-  var apps = await getapps();
-  if (format == "JSON") {
-    if (res) res.send(apps);
-  } else {
-    let appcount = apps.resources.length;
-    // Render the response using the PUG template and passing in any required values
-    if (res) res.render('apps', {
-      title: "Hackathon SR Apps",
-      apps: apps.resources,
-    });
-  }
+  let apps = await getapps();
+
+  let appcount = apps.resources.length;
+  // Render the response using the PUG template and passing in any required values
+  if (res) res.render('apps', {
+    title: "Hackathon SR Apps",
+    apps: apps.resources,
+  });
   return ("Apps rendered");
+}
+
+async function applist(req, res, next) {
+
+  console.log("getting apps list from: " + endpoint);
+  let apps = await getapps();
+  if (res) res.send(apps);
 }
 
 async function appadd(req, res, next) {
 
-  // var pushCommand = "cf push elbinapp --docker-image sanjeevkumar761/cf_ms:ElbinAbey";
+  // let pushCommand = "cf push elbinapp --docker-image sanjeevkumar761/cf_ms:ElbinAbey";
   // http://localhost:3000/apps/add?imagename=cf_ms:rene&appname=rene2
 
   let imagename = req.body.imagename;
@@ -90,7 +94,7 @@ async function appadd(req, res, next) {
   };
 
   if (!appname) { appname = "deploytest" };
-  var appoptions = {
+  let appoptions = {
     "name": appname,
     "space_guid": spaceid,
     "docker_image": imagename,
@@ -102,11 +106,11 @@ async function appadd(req, res, next) {
   }
 
   try {
-    var info = await CloudController.getInfo();
+    let info = await CloudController.getInfo();
     UsersUAA.setEndPoint(info.authorization_endpoint);
-    var result = await UsersUAA.login(un, pw);
+    let result = await UsersUAA.login(un, pw);
     CloudApps.setToken(result);
-    var resultAdd = await CloudApps.add(appoptions);
+    let resultAdd = await CloudApps.add(appoptions);
     if (res) res.send(resultOp);
     return (resultOp);
   } catch (error) {
@@ -120,10 +124,10 @@ async function appadd(req, res, next) {
 
 async function appupdate(req, res, next) {
 
-  var imagename = req.query.imagename;
-  var appname = req.query.appname;
-  var appid = req.params.id;
-  var appoptions = {}
+  let imagename = req.query.imagename;
+  let appname = req.query.appname;
+  let appid = req.params.id;
+  let appoptions = {}
   console.log("updating " + appid);
 
   if (!appid) {
@@ -132,11 +136,11 @@ async function appupdate(req, res, next) {
   }
 
   try {
-    var info = await CloudController.getInfo();
+    let info = await CloudController.getInfo();
     UsersUAA.setEndPoint(info.authorization_endpoint);
-    var result = await UsersUAA.login(un, pw);
+    let result = await UsersUAA.login(un, pw);
     CloudApps.setToken(result);
-    var resultOp = await CloudApps.update(appid, appoptions);
+    let resultOp = await CloudApps.update(appid, appoptions);
     if (res) res.send(resultOp);
     return (resultOp);
   } catch (error) {
@@ -149,7 +153,7 @@ async function appupdate(req, res, next) {
 
 async function appremove(req, res, next) {
 
-  var appid = req.params.id;
+  let appid = req.params.id;
   console.log("removing " + appid);
 
   try {
@@ -168,11 +172,11 @@ async function appremove(req, res, next) {
 async function appremovebyid(appid) {
   if (!appid) return "No App Specified";
   try {
-    var info = await CloudController.getInfo();
+    let info = await CloudController.getInfo();
     UsersUAA.setEndPoint(info.authorization_endpoint);
-    var result = await UsersUAA.login(un, pw);
+    let result = await UsersUAA.login(un, pw);
     CloudApps.setToken(result);
-    var resultOp = await CloudApps.remove(appid);
+    let resultOp = await CloudApps.remove(appid);
     return (resultOp);
   } catch (error) {
     return (error);
@@ -181,7 +185,7 @@ async function appremovebyid(appid) {
 
 async function appstart(req, res, next) {
 
-  var appid = req.params.id;
+  let appid = req.params.id;
   console.log("starting " + appid);
 
   if (!appid) {
@@ -190,11 +194,11 @@ async function appstart(req, res, next) {
   }
 
   try {
-    var info = await CloudController.getInfo();
+    let info = await CloudController.getInfo();
     UsersUAA.setEndPoint(info.authorization_endpoint);
-    var result = await UsersUAA.login(un, pw);
+    let result = await UsersUAA.login(un, pw);
     CloudApps.setToken(result);
-    var resultOp = await CloudApps.start(appid);
+    let resultOp = await CloudApps.start(appid);
     if (res) res.send(resultOp);
     return (resultOp);
   } catch (error) {
@@ -207,7 +211,7 @@ async function appstart(req, res, next) {
 
 async function appstop(req, res, next) {
 
-  var appid = req.params.id;
+  let appid = req.params.id;
   console.log("stopping " + appid);
   if (!appid) {
     if (res) res.send("No App Specified");
@@ -215,11 +219,11 @@ async function appstop(req, res, next) {
   }
 
   try {
-    var info = await CloudController.getInfo();
+    let info = await CloudController.getInfo();
     UsersUAA.setEndPoint(info.authorization_endpoint);
-    var result = await UsersUAA.login(un, pw);
+    let result = await UsersUAA.login(un, pw);
     CloudApps.setToken(result);
-    var resultOp = await CloudApps.stop(appid);
+    let resultOp = await CloudApps.stop(appid);
     if (res) res.send(resultOp);
     return (resultOp);
   } catch (error) {
@@ -232,6 +236,7 @@ async function appstop(req, res, next) {
 
 module.exports = {
   applist,
+  applistcontrol,
   appadd,
   appstart,
   appupdate,

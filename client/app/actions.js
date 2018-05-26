@@ -28,7 +28,7 @@ function appstop(guid) {
 }
 
 function appupdate(guid) {
-    appaction(guid, "update", "Updating App", "PATCH")
+    appaction(guid, "", "Updating App", "PUT")
 }
 
 function appdelete(guid) {
