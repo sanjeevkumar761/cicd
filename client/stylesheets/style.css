@@ -30,3 +30,7 @@ body, html {
   cursor: pointer;
 }
 
+.panel-body {
+  padding: 0px;
+}
+
