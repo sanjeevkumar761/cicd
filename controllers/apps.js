@@ -1,16 +1,21 @@
 let cfNodejsClient = require("cf-nodejs-client");
 
+var dotenv = require('dotenv').config();
+console.log ("CLOUD ENDPOINT: " + process.env.CICD_ENDPOINT)
+
 //get environment variables
 const endpoint = process.env.CICD_ENDPOINT;
 const un = process.env.CICD_UN;
 const pw = process.env.CICD_PW;
 const spaceid = process.env.CICD_SPACEID;
 const orgid = process.env.CICD_ORGID;
+const domainid = process.env.CICD_DOMAINID;
 
 //Setup clpud objects
 const CloudController = new (require("cf-nodejs-client")).CloudController(endpoint);
 const UsersUAA = new (require("cf-nodejs-client")).UsersUAA;
 const CloudApps = new (require("cf-nodejs-client")).Apps(endpoint);
+const CloudRoutes = new (require("cf-nodejs-client")).Routes(endpoint);
 
 // App functions
 async function getapps() {
@@ -84,40 +89,58 @@ async function appadd(req, res, next) {
   // let pushCommand = "cf push elbinapp --docker-image sanjeevkumar761/cf_ms:ElbinAbey";
   // http://localhost:3000/apps/add?imagename=cf_ms:rene&appname=rene2
 
+  /* App push executes:
+    1. get space uuid
+    2. add app
+    3. set route
+    4. upload app
+    5. start app
+  */
+
   let imagename = req.body.imagename;
   let appname = req.body.appname;
 
-  if (!imagename) {
-    imagename = "sanjeevkumar761/cf_ms:rene"
-  } else {
-    imagename = "sanjeevkumar761/" + imagename
-  };
+  if (!imagename) {imagename = "sanjeevkumar761/cf_ms:rene"};
 
   if (!appname) { appname = "deploytest" };
-  let appoptions = {
-    "name": appname,
-    "space_guid": spaceid,
-    "docker_image": imagename,
-    "organization_guid": orgid,
-    "start_command": "npm start",
-    "requested_state": "STARTED",
-    "instances": 1,
-    "memory": 512
-  }
 
   try {
     let info = await CloudController.getInfo();
     UsersUAA.setEndPoint(info.authorization_endpoint);
     let result = await UsersUAA.login(un, pw);
     CloudApps.setToken(result);
+    CloudRoutes.setToken(result);
+
+    let routeoptions = {
+      "space_guid": spaceid,
+      "domain_guid": domainid,
+      "host": appname
+    }
+    let resultRoute = await CloudRoutes.add(routeoptions);
+
+    let appoptions = {
+      "name": appname,
+      "space_guid": spaceid,
+      "docker_image": imagename,
+      "organization_guid": orgid,
+      "start_command": "npm start",
+      "requested_state": "STARTED",
+      "instances": 1,
+      "memory": 512
+    }
     let resultAdd = await CloudApps.add(appoptions);
+    //let resultRoute = await CloudRoutes.getRoutes();
+    let routeid = resultRoute.metadata.guid;
+    let appid = resultAdd.metadata.guid;
+    let resultAssoc = await CloudApps.associateRoute(appid, routeid);
+    let resultOp = await CloudApps.start (appid);
+
     if (res) res.send(resultOp);
     return (resultOp);
   } catch (error) {
     if (res) res.status(500)
     if (res) res.send(error);
     console.error(error);
-    return (error);
   }
 
 }
@@ -157,10 +180,10 @@ async function appremove(req, res, next) {
   console.log("removing " + appid);
 
   try {
-    let resultop = await aooremovebyid(appid);
-    res.send(resultop);
-    console.log(resultOP);
-    return (resultop);
+    let resultOp = await appremovebyid(appid);
+    res.send(resultOp);
+    console.log(resultOp);
+    return (resultOp);
   } catch (error) {
     res.status(500)
     res.send(error);
