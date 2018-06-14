@@ -1,0 +1,342 @@
+swagger: '2.0'
+info:
+  description: This is an API to manage app on our SAP Cloud Foundry server
+  version: 1.0.0
+  title: Apps
+host: localhost:3000
+basePath: /
+tags:
+  - name: apps
+    description: Everything about Apps
+    externalDocs:
+      description: Find out more
+      url: 'http://localhost:3000'
+  - name: workflow
+    description: Everything about Workflows
+    externalDocs:
+      description: Find out more
+      url: 'http://localhost:3000'
+schemes:
+  - http
+  - https
+paths:
+  /apps:
+    get:
+      tags:
+        - apps
+      summary: lists the apps in JSON format
+      description: ''
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/json
+        - application/xml
+      responses:
+        '200':
+          description: successful operation
+    post:
+      tags:
+        - apps
+      summary: Add a new app
+      description: ''
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: a
+          required: true
+          schema:
+            $ref: '#/definitions/App'
+      responses:
+        '405':
+          description: Invalid input
+  '/apps/list':
+    get:
+      tags:
+        - apps
+      summary: List all apps in UI
+      description: Returns al Apps in a nice interface from bootstrap
+      operationId: listApps
+      produces:
+        - text/html
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/App'
+        '500':
+          description: Invalid ID supplied
+  '/apps/{appId}':
+    put:
+      tags:
+        - apps
+      summary: Find app by ID
+      description: Returns a single pet
+      operationId: getPetById
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: appId
+          in: path
+          description: ID of pet to return
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/App'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+    delete:
+      tags:
+        - apps
+      summary: Deletes a pet
+      description: ''
+      operationId: deletePet
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: api_key
+          in: header
+          required: false
+          type: string
+        - name: appId
+          in: path
+          description: Pet id to delete
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+  '/apps/{appId}/start':
+    patch:
+      tags:
+        - apps
+      summary: Starts an app
+      description: ''
+      operationId: uploadFile
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - name: appId
+          in: path
+          description: ID of pet to update
+          required: true
+          type: integer
+          format: int64
+        - name: additionalMetadata
+          in: formData
+          description: Additional data to pass to server
+          required: false
+          type: string
+        - name: file
+          in: formData
+          description: file to upload
+          required: false
+          type: file
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+  '/apps/{appId}/stop':
+    patch:
+      tags:
+        - apps
+      summary: Stops an app
+      description: ''
+      operationId: appStop
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - name: appId
+          in: path
+          description: ID of pet to update
+          required: true
+          type: integer
+          format: int64
+        - name: additionalMetadata
+          in: formData
+          description: Additional data to pass to server
+          required: false
+          type: string
+        - name: file
+          in: formData
+          description: file to upload
+          required: false
+          type: file
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ApiResponse'
+  /workflow:
+    get:
+      tags:
+        - workflow
+      summary: lists the workflows
+      description: ''
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '405':
+          description: Invalid input
+    post:
+      tags:
+        - apps
+      summary: Add a new app
+      description: ''
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: a
+          required: true
+          schema:
+            $ref: '#/definitions/Workflow'
+      responses:
+        '405':
+          description: Invalid input
+  '/workflow/{action}':
+    get:
+      tags:
+        - workflow
+      summary: Starts a workflow
+      description: Returns al Apps in a nice interface from bootstrap
+      operationId: listWorkflows
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: action
+          in: path
+          description: ID of pet to update
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Workflow'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+    post:
+      tags:
+        - workflow
+      summary: Starts a workflow
+      description: Returns al Apps in a nice interface from bootstrap
+      operationId: startWorkflow
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: action
+          in: path
+          description: ID of pet to update
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Workflow'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+definitions:
+  App:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+      metadata:
+        type: array
+        xml:
+          name: photoUrl
+          wrapped: true
+        items:
+          type: string
+      entity:
+        type: array
+        xml:
+          name: photoUrl
+          wrapped: true
+        items:
+          type: string
+    xml:
+      name: Workflow
+  Workflow:
+    type: object
+    required:
+      - name
+      - photoUrls
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+        example: doggie
+      photoUrls:
+        type: array
+        xml:
+          name: photoUrl
+          wrapped: true
+        items:
+          type: string
+      status:
+        type: string
+        description: pet status in the store
+        enum:
+          - available
+          - pending
+          - sold
+    xml:
+      name: Workflow
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      type:
+        type: string
+      message:
+        type: string
+externalDocs:
+  description: Find out more about CF
+  url: 'http://pivotal.io'

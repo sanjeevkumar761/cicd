@@ -1,5 +1,14 @@
 function appaction(guid, action, m, type) {
 
+/*  More modern fetch request not working in IE
+
+    fetch(url).then(function(response) {
+        response.text().then(function(text) {
+          poemDisplay.textContent = text;
+        });
+      });
+*/
+
     if (!type) type = "GET"
     let xhr = new XMLHttpRequest();
     let messagetext;
@@ -34,7 +43,7 @@ function appupdate(guid) {
 function appdelete(guid) {
     let decision = confirm("Are you sure you want to delete app with GUID: " + guid + "?");
     if (decision) {
-        appaction(guid, "remove", "Deleting App", "DELETE")
+        appaction(guid, "", "Deleting App", "DELETE")
     } else {
         let message = document.getElementById("message-" + guid);
         message.hide();

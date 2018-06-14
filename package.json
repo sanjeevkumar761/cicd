@@ -9,11 +9,12 @@
     "cf-nodejs-client": "0.13.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "latest",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
     "pug": "2.0.3",
     "pug-bootstrap": "0.0.15",
-    "dotenv": "latest"
+    "swagger-ui-express": "3.0.9"
   }
 }

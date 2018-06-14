@@ -90,7 +90,10 @@ async function applist(req, res, next) {
 
   try {
     let apps = await getapps();
-    if (res) res.send(apps);
+    if (res) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(apps);
+    }
   } catch (err) {
     console.error(err.message);
     createError(500);
